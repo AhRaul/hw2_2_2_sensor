@@ -2,8 +2,7 @@ package com.example.wetatch;
 
 
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,7 +16,7 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import java.util.List;
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -25,6 +24,7 @@ import java.util.List;
  */
 public class StartAppFragment extends Fragment {
     private static final String TAG = "!!!!!StartAppFragment: ";
+    private static final String SAVE_KEY = "1";
 
     private boolean isExistTwoPlase;      //можно ли расположить рядом второй фрагмент
 
@@ -33,9 +33,7 @@ public class StartAppFragment extends Fragment {
     private Switch switchPressure;          //ссылка на свич давление в макете start_app
     private Switch switchWind;              //ссылка на свич ветер в макете start_app
     private Button buttonShowWeather;       //кнопка вывода погоды города
-
-    private Switch switchTempSensor;
-    private Switch switchDrySensor;
+    private Button buttonSaveCity;
 
     public StartAppFragment() {
         // Required empty public constructor
@@ -52,9 +50,9 @@ public class StartAppFragment extends Fragment {
         switchPressure = viewInflater.findViewById(R.id.switchAtmos);
         switchWind = viewInflater.findViewById(R.id.switchWind);
         buttonShowWeather = viewInflater.findViewById(R.id.buttonShowWeather);
-
-        switchTempSensor = viewInflater.findViewById(R.id.switch1);
-        switchDrySensor = viewInflater.findViewById(R.id.switch2);
+        buttonSaveCity = viewInflater.findViewById(R.id.button_save_city);
+        SharedPreferences sharedPref = getActivity().getPreferences(MODE_PRIVATE);
+        loadPreferences(sharedPref);
 
         Log.i(TAG, "onCreateView()");
 
@@ -89,11 +87,18 @@ public class StartAppFragment extends Fragment {
                 ActualChoiceState.setCurrentCityName(editTextCityName.getText().toString());
                 ActualChoiceState.setSwitchPressure(switchPressure.isChecked());
                 ActualChoiceState.setSwitchWindspeed(switchWind.isChecked());
-
-                ActualChoiceState.setSwitchTempSensor(switchTempSensor.isChecked());
-                ActualChoiceState.setSwitchDrySensor(switchDrySensor.isChecked());
-
                 showOutInfo();      //метод вывода (либо в соседний фрагмент, либо в новую активити)
+            }
+        });
+
+        //обработчик кнопки сохранение данных
+        buttonSaveCity.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                SharedPreferences sharedPref = getActivity().getPreferences(MODE_PRIVATE);
+                savePreferences(sharedPref);    // сохранить настройки
             }
         });
     }
@@ -122,5 +127,26 @@ public class StartAppFragment extends Fragment {
             intent.setClass(getActivity(), OutInfoActivity.class);  //этот интент предназначен классу OutInfoActivity, никаких параметров в интент, т.к. они есть в static
             startActivity(intent);
         }
+    }
+
+    // сохраняем настройки
+    private void savePreferences(SharedPreferences sharedPref){
+        String homeCity = editTextCityName.getText().toString();
+
+        // для сохранения настроек надо воспользоваться классом Editor
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        // теперь в Editor установим значения
+        editor.putString(SAVE_KEY, homeCity);
+
+        // и сохраним файл настроек
+        editor.apply();
+    }
+
+    private void loadPreferences(SharedPreferences sharedPref){
+        // для получения настроек нет необходимости в Editor, получаем их прямо из SharedPreferences
+        String valueFirst = sharedPref.getString(SAVE_KEY, "");
+
+        editTextCityName.setText(valueFirst);
     }
 }
