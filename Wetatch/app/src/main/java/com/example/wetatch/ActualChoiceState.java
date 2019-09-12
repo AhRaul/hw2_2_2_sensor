@@ -8,25 +8,6 @@ public class ActualChoiceState {
     private static boolean switchPressure;
     private static boolean switchWindspeed;
 
-    public static boolean isSwitchTempSensor() {
-        return switchTempSensor;
-    }
-
-    public static void setSwitchTempSensor(boolean switchTempSensor) {
-        ActualChoiceState.switchTempSensor = switchTempSensor;
-    }
-
-    public static boolean isSwitchDrySensor() {
-        return switchDrySensor;
-    }
-
-    public static void setSwitchDrySensor(boolean switchDrySensor) {
-        ActualChoiceState.switchDrySensor = switchDrySensor;
-    }
-
-    private static boolean  switchTempSensor;
-    private static boolean  switchDrySensor;
-
     public ActualChoiceState() {
     }
 

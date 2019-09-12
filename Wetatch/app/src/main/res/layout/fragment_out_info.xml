@@ -93,20 +93,4 @@
         app:layout_constraintStart_toStartOf="@+id/textViewOutAtmos"
         app:layout_constraintTop_toBottomOf="@+id/textViewOutAtmos" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="211dp"
-        android:layout_height="54dp"
-        android:layout_marginTop="44dp"
-        app:layout_constraintStart_toStartOf="@+id/textViewOutWind"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOutWind" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="213dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
 </android.support.constraint.ConstraintLayout>
